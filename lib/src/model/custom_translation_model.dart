@@ -1,10 +1,28 @@
 class CustomTranslation {
-  Map<String, String>? translationMap;
+  Map<String, String>? enUs;
+  Map<String, String>? csCz;
+  Map<String, String>? plPl;
+  Map<String, Map<String, String>>? translationMap;
 
-  CustomTranslation(this.translationMap);
+  CustomTranslation({this.translationMap}) {
+    if (translationMap != null) {
+      enUs = translationMap!['en_US'];
+      csCz = translationMap!['cs_CZ'];
+      plPl = translationMap!['pl_PL'];
+    }
+  }
 
-  CustomTranslation.fromJson(Map<String, dynamic> json)
-      : translationMap = json['translationMap'];
+  CustomTranslation.fromJson(Map<String, dynamic> json) {
+    translationMap =
+        (json['translationMap'] as Map<String, dynamic>).map((key, value) =>
+            MapEntry(key, (value as Map<String, dynamic>).map((k, v) =>
+                MapEntry(k, v as String))));
+    if (translationMap != null) {
+      enUs = translationMap!['en_US'];
+      csCz = translationMap!['cs_CZ'];
+      plPl = translationMap!['pl_PL'];
+    }
+  }
 
   Map<String, dynamic> toJson() {
     var json = <String, dynamic>{};
@@ -16,6 +34,6 @@ class CustomTranslation {
 
   @override
   String toString() {
-    return 'CustomTranslation{translationMap: $translationMap}';
+    return 'CustomTranslation{enUs: $enUs, csCz: $csCz, plPL: $plPl, translationMap: $translationMap}';
   }
 }
