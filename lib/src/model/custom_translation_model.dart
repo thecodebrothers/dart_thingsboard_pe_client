@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 class CustomTranslation {
   Map<String, String>? enUs;
   Map<String, String>? csCz;
@@ -13,10 +15,15 @@ class CustomTranslation {
   }
 
   CustomTranslation.fromJson(Map<String, dynamic> json) {
-    translationMap =
-        (json['translationMap'] as Map<String, dynamic>).map((key, value) =>
-            MapEntry(key, (value as Map<String, dynamic>).map((k, v) =>
-                MapEntry(k, v as String))));
+    translationMap = (json['translationMap'] as Map<String, dynamic>).map(
+      (key, value) => MapEntry(
+        key,
+        (jsonDecode(value) as Map<String, dynamic>).map(
+          (k, v) => MapEntry(k, v as String),
+        ),
+      ),
+    );
+
     if (translationMap != null) {
       enUs = translationMap!['en_US'];
       csCz = translationMap!['cs_CZ'];
